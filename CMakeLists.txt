@@ -7,7 +7,6 @@ find_package(navigation2 REQUIRED)
 
 install(DIRECTORY launch
   configs
-  maps
   worlds
   robots
   components
