@@ -103,13 +103,13 @@
     <visual name="body">
       <origin rpy="0 0 1.570796" xyz="0.0 0.0 0"/>
       <geometry>
-        <mesh filename="package://neo_simulation2/robots/mp_500/meshes/MP-500-BODY.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://final_assessment/robots/mp_500/meshes/MP-500-BODY.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </visual>
     <collision name="body_collision">
       <origin rpy=" 0 0. 1.570796" xyz="0.0 0.0 0.0"/>
       <geometry>
-        <mesh filename="package://neo_simulation2/robots/mp_500/meshes/MP-500-BODY.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://final_assessment/robots/mp_500/meshes/MP-500-BODY.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
   </link>
@@ -129,13 +129,13 @@
     <visual name="castor_wheel">
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://neo_simulation2/robots/mp_500/meshes/MP-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://final_assessment/robots/mp_500/meshes/MP-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://neo_simulation2/robots/mp_500/meshes/MP-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://final_assessment/robots/mp_500/meshes/MP-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
   </link>
@@ -165,13 +165,13 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://neo_simulation2/robots/mp_500/meshes/MP-500-WHEEL-RIGHT.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://final_assessment/robots/mp_500/meshes/MP-500-WHEEL-RIGHT.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://neo_simulation2/robots/mp_500/meshes/MP-500-WHEEL-RIGHT.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://final_assessment/robots/mp_500/meshes/MP-500-WHEEL-RIGHT.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
   </link>
@@ -192,13 +192,13 @@
     <visual>
       <origin rpy="0 0 3.14" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://neo_simulation2/robots/mp_500/meshes/MP-500-WHEEL-LEFT.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://final_assessment/robots/mp_500/meshes/MP-500-WHEEL-LEFT.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://neo_simulation2/robots/mp_500/meshes/MP-500-WHEEL-LEFT.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://final_assessment/robots/mp_500/meshes/MP-500-WHEEL-LEFT.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
   </link>
@@ -217,13 +217,13 @@
     <visual>
       <origin rpy="-1.57 0 3.14" xyz="0 0 -0.12"/>
       <geometry>
-        <mesh filename="package://neo_simulation2/components/sensors/SICK-S300.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://final_assessment/components/sensors/SICK-S300.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </visual>
     <collision>
       <origin rpy="-1.57 0 3.14" xyz="0 0 -0.12"/>
       <geometry>
-        <mesh filename="package://neo_simulation2/components/sensors/SICK-S300.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://final_assessment/components/sensors/SICK-S300.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
   </link>
