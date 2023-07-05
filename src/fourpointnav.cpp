@@ -24,6 +24,7 @@
 using namespace std::chrono_literals;
 
 float g_feedback_distance = 0.0;
+size_t g_totalCheckpoints = 0;
 bool g_isNavigating = false;
 
 class FourPointNav : public rclcpp::Node
@@ -52,21 +53,24 @@ private:
     rclcpp_action::Client<NavigateToPose>::SharedPtr navigation_action_client_;
     rclcpp_action::ClientGoalHandle<NavigateToPose>::SharedPtr navigation_goal_handle_;
 
-    float totalNavigationTime;
-    float prevNavigationTime;
-    float currentNavigationTime;
+    float g_feedback_distance = 0.0;
+    size_t g_totalCheckpoints = 0;
+    bool g_isNavigating = false;
+
+    float totalNavigationTime = 0;
+    float prevNavigationTime = 0;
+    float currentNavigationTime = 0;
 
     void sendGoals(const std::vector<geometry_msgs::msg::PoseStamped>& poses)
     {
         for (const auto& pose : poses) {
-            auto is_action_server_ready = navigation_action_client_->wait_for_action_server(std::chrono::seconds(100));
+            bool is_action_server_ready = navigation_action_client_->wait_for_action_server(std::chrono::seconds(60));
             if (!is_action_server_ready) {
                 RCLCPP_ERROR(
                     this->get_logger(),
                     "navigate_to_pose action server is not available. Is the initial pose set?");
                 return;
             }
-
             NavigateToPose::Goal navigation_goal_;
             navigation_goal_.pose = pose;
 
@@ -77,7 +81,8 @@ private:
             send_goal_options.goal_response_callback = std::bind(&FourPointNav::goal_response_callback, this, std::placeholders::_1);
             send_goal_options.feedback_callback = std::bind(&FourPointNav::feedback_callback, this, std::placeholders::_1, std::placeholders::_2);
             send_goal_options.result_callback = std::bind(&FourPointNav::result_callback, this, std::placeholders::_1);
-
+	    
+	    
             navigation_action_client_->async_send_goal(navigation_goal_, send_goal_options);
             g_isNavigating = true;
 
@@ -99,28 +104,59 @@ private:
 
     void feedback_callback(GoalHandleNavigateToPose::SharedPtr, const std::shared_ptr<const NavigateToPose::Feedback> feedback)
     {
-        if(prevNavigationTime > (feedback->navigation_time.sec +feedback->navigation_time.nanosec))
-        prevNavigationTime = feedback->navigation_time.sec +feedback->navigation_time.nanosec;
+        if(prevNavigationTime < (feedback->navigation_time.sec))
+        prevNavigationTime = feedback->navigation_time.sec;
 
         RCLCPP_INFO(      this->get_logger(),
-      "\n\nCurrent Pose : x:%f, y: %f\nDistance Remaining:  %f m\nNumber of Recoveries: %d\nTotal Time Taken: %d.%d s\n" ,      
+      "\n\nCurrent Pose : x:%f, y: %f\nDistance Remaining:  %f m\nNumber of Recoveries: %d\nTotal Time Taken: %d.%d s\nTotal Checkpoints Reached: %d \n" ,      
       feedback->current_pose.pose.position.x, feedback->current_pose.pose.position.y,
       feedback->distance_remaining,
       feedback->number_of_recoveries,      
-      feedback->navigation_time.sec, feedback->navigation_time.nanosec      
+      feedback->navigation_time.sec, feedback->navigation_time.nanosec,
+      g_totalCheckpoints
       );
     }
 
     void result_callback(const rclcpp_action::ClientGoalHandle<NavigateToPose>::WrappedResult& result)
     {
-        if (result.code == rclcpp_action::ResultCode::SUCCEEDED) {
-            RCLCPP_INFO(this->get_logger(), "Navigation goal succeeded");
-        } else {
-            RCLCPP_INFO(this->get_logger(), "Navigation goal failed");
+        if (result.code != rclcpp_action::ResultCode::SUCCEEDED)
+        {
+            RCLCPP_ERROR(this->get_logger(),
+            "\n\n***Four-Point Navigation Failed 1st! :( *** \n\nCurrent Pose : x:%f, y: %f\nDistance Remaining:  %f m\nNumber of Recoveries: %d\nTotal Time Taken: %d.%d s\nTotal Checkpoints Reached: %d \n" ,      
+            this->prevNavigationTime, this->prevNavigationTime,
+            this->prevNavigationTime,
+            g_totalCheckpoints,      
+            this->prevNavigationTime, this->prevNavigationTime,
+            g_totalCheckpoints
+            );
+            return;
         }
-        g_isNavigating = false;
 
-        RCLCPP_INFO(this->get_logger(), "%f", this->prevNavigationTime);
+        g_isNavigating = false;
+        ++g_totalCheckpoints;
+
+        if (g_totalCheckpoints == 4)
+        {
+            RCLCPP_INFO(this->get_logger(),
+            "\n\n***Four-Point Navigation Success! :) *** \n\nCurrent Pose : x:%f, y: %f\nTotal Distance Covered:  %f m\nTotal Number of Recoveries: %d\nTotal Time Taken: %d.%d s\nTotal Checkpoints Reached: %d \n" ,      
+            this->prevNavigationTime, this->prevNavigationTime,
+            this->prevNavigationTime,
+            g_totalCheckpoints,      
+            this->prevNavigationTime, this->prevNavigationTime,
+            g_totalCheckpoints
+            );
+        }
+        else
+        {
+            RCLCPP_DEBUG(this->get_logger(),
+            "\n\n***Four-Point Navigation Failed! :( *** \n\nCurrent Pose : x:%f, y: %f\nDistance Remaining:  %f m\nNumber of Recoveries: %d\nTotal Time Taken: %d.%d s\nTotal Checkpoints Reached: %d \n" ,      
+            this->prevNavigationTime, this->prevNavigationTime,
+            this->prevNavigationTime,
+            g_totalCheckpoints,      
+            this->prevNavigationTime, this->prevNavigationTime,
+            g_totalCheckpoints
+            );
+        }
     }
 
     geometry_msgs::msg::PoseStamped createPose(double x, double y, double z, double orientation)
