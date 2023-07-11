@@ -16,9 +16,9 @@ find_package(geometry_msgs REQUIRED)
 find_package(nav2_util REQUIRED)
 
 
-add_executable(fourpointnav src/fourpointnav.cpp)
+add_executable(fa_nav src/fa_nav.cpp)
 
-ament_target_dependencies(fourpointnav
+ament_target_dependencies(fa_nav
   "rclcpp" 
   "std_msgs"
   "rclcpp_action"
@@ -29,12 +29,12 @@ ament_target_dependencies(fourpointnav
   "nav2_util"
   )
 
-target_include_directories(fourpointnav PUBLIC
+target_include_directories(fa_nav PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 
 install(TARGETS 
-  fourpointnav
+  fa_nav
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY launch
