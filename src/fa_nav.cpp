@@ -37,11 +37,12 @@ public:
         navigation_action_client_ = rclcpp_action::create_client<NavigateToPose>(this, "navigate_to_pose");
 
         // List of target poses
+        //Do not Change!
         std::vector<geometry_msgs::msg::PoseStamped> poses = {
-            createPose(2.0, 0.0, 0.0, 0.0),
-            createPose(2.0, 1.0, 0.0, 0.0),
-            createPose(0.0, 1.0, 0.0, 0.0),
-            createPose(0.0, 0.0, 0.0, 0.0)
+            createPose(1.0, 5.50, 0.0, 0.0),
+            createPose(1.0, -6.50, 0.0, 0.0),
+            createPose(-4.20, 1.00, 0.0, 0.0),
+            createPose(-3.30, -4.10, 0.0, 0.0)
         };
 
         sendGoals(poses);
